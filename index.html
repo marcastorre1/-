@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ТОСТАР ГОМИК 🍰</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(circle at center, #3b173f, #120914 75%);
+
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    text-align: center;
+}
+
+button {
+    border: none;
+    border-radius: 50px;
+
+    padding: 18px 35px;
+
+    background: linear-gradient(135deg, #ff4d8d, #ff174f);
+    color: white;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 15px #ff4d8d,
+        0 0 35px rgba(255, 77, 141, .5);
+
+    transition: .3s;
+}
+
+button:hover {
+    transform: scale(1.08);
+}
+
+button:active {
+    transform: scale(.95);
+}
+
+/* Сцена */
+
+#scene {
+    display: none;
+
+    position: relative;
+
+    width: 600px;
+    height: 600px;
+
+    margin: auto;
+}
+
+/* Текст */
+
+.word {
+    position: absolute;
+
+    color: #ff73a8;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    text-shadow:
+        0 0 5px #ff174f,
+        0 0 12px #ff174f;
+
+    opacity: 0;
+
+    animation: appear 1.4s ease forwards;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: scale(.2);
+    }
+
+    60% {
+        opacity: .7;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Торт */
+
+.cake {
+    position: absolute;
+
+    left: 50%;
+    top: 52%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(.2);
+
+    opacity: 0;
+
+    width: 280px;
+    height: 150px;
+
+    transition:
+        transform 1.5s cubic-bezier(.17,.67,.28,1.3),
+        opacity 1.5s ease;
+
+    z-index: 20;
+}
+
+.cake.show {
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+
+    opacity: 1;
+}
+
+/* Нижний слой */
+
+.cake-bottom {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 280px;
+    height: 85px;
+
+    border-radius: 15px 15px 30px 30px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #ff80ab,
+            #ff3f78
+        );
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.4),
+        0 0 25px rgba(255,50,110,.5);
+}
+
+/* Крем */
+
+.cream {
+    position: absolute;
+
+    left: 0;
+    bottom: 65px;
+
+    width: 280px;
+    height: 40px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 15px rgba(255,255,255,.8);
+}
+
+/* Верх торта */
+
+.cake-top {
+    position: absolute;
+
+    left: 10px;
+    top: 35px;
+
+    width: 260px;
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: #ff6695;
+
+    border: 4px solid #ff9fbd;
+}
+
+/* Свечка */
+
+.candle {
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    transform: translateX(-50%);
+
+    width: 18px;
+    height: 60px;
+
+    border-radius: 8px;
+
+    background: repeating-linear-gradient(
+        45deg,
+        #fff,
+        #fff 8px,
+        #ff4d80 8px,
+        #ff4d80 16px
+    );
+}
+
+/* Огонёк */
+
+.flame {
+    position: absolute;
+
+    left: 50%;
+    top: -30px;
+
+    transform: translateX(-50%);
+
+    font-size: 28px;
+
+    animation: flame 0.5s infinite alternate;
+}
+
+@keyframes flame {
+    from {
+        transform:
+            translateX(-50%)
+            scale(.9);
+    }
+
+    to {
+        transform:
+            translateX(-50%)
+            scale(1.15);
+    }
+}
+
+/* Банан */
+
+.banana {
+    position: absolute;
+
+    left: 50%;
+    top: -80px;
+
+    transform:
+        translateX(-50%)
+        rotate(-8deg)
+        scale(.1);
+
+    opacity: 0;
+
+    font-size: 100px;
+
+    z-index: 30;
+
+    filter:
+        drop-shadow(0 5px 8px rgba(0,0,0,.35));
+
+    animation: none;
+}
+
+.banana.show {
+    animation: bananaAppear 1.8s
+        cubic-bezier(.17,.67,.28,1.3)
+        forwards;
+}
+
+@keyframes bananaAppear {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateX(-50%)
+            translateY(80px)
+            rotate(-45deg)
+            scale(.1);
+    }
+
+    60% {
+        opacity: 1;
+        transform:
+            translateX(-50%)
+            translateY(-10px)
+            rotate(10deg)
+            scale(1.15);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translateX(-50%)
+            translateY(0)
+            rotate(-8deg)
+            scale(1);
+    }
+}
+
+/* Маленькие конфетти */
+
+.confetti {
+    position: fixed;
+
+    font-size: 20px;
+
+    pointer-events: none;
+
+    animation: confetti 3s linear forwards;
+}
+
+@keyframes confetti {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translateY(100vh)
+            rotate(720deg);
+    }
+}
+
+/* Телефон */
+
+@media (max-width: 700px) {
+
+    #scene {
+        transform: scale(.65);
+    }
+
+    button {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <button id="startButton" onclick="startPrank()">
+        Нажми 😂
+    </button>
+
+    <div id="scene">
+
+        <!-- Текст будет превращаться в торт -->
+
+        <div id="words"></div>
+
+        <!-- Торт -->
+
+        <div class="cake" id="cake">
+
+            <div class="banana" id="banana">
+                🍌
+            </div>
+
+            <div class="candle"></div>
+
+            <div class="flame">
+                🔥
+            </div>
+
+            <div class="cake-top"></div>
+
+            <div class="cream"></div>
+
+            <div class="cake-bottom"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function startPrank() {
+
+    const button =
+        document.getElementById("startButton");
+
+    const scene =
+        document.getElementById("scene");
+
+    const words =
+        document.getElementById("words");
+
+    const cake =
+        document.getElementById("cake");
+
+    const banana =
+        document.getElementById("banana");
+
+    button.style.display = "none";
+
+    scene.style.display = "block";
+
+    /*
+        Форма торта.
+        Слова располагаются
+        по контуру и внутри.
+    */
+
+    const positions = [
+
+        // Верх
+        [175, 205],
+        [230, 195],
+        [285, 190],
+        [340, 195],
+        [395, 205],
+
+        // Второй ряд
+        [145, 230],
+        [200, 225],
+        [255, 220],
+        [310, 220],
+        [365, 225],
+        [420, 230],
+
+        // Средний
+        [130, 260],
+        [185, 255],
+        [240, 250],
+        [295, 250],
+        [350, 255],
+        [405, 260],
+        [455, 265],
+
+        // Нижний
+        [125, 295],
+        [180, 290],
+        [235, 290],
+        [290, 290],
+        [345, 290],
+        [400, 290],
+        [455, 295],
+
+        // Основание
+        [130, 330],
+        [190, 330],
+        [250, 330],
+        [310, 330],
+        [370, 330],
+        [430, 330]
+
+    ];
+
+    positions.forEach((pos, index) => {
+
+        const text =
+            document.createElement("div");
+
+        text.className = "word";
+
+        text.textContent =
+            "ТОСТАР ГОМИК";
+
+        text.style.left =
+            pos[0] + "px";
+
+        text.style.top =
+            pos[1] + "px";
+
+        text.style.animationDelay =
+            (index * 0.07) + "s";
+
+        words.appendChild(text);
+
+    });
+
+    /* Через небольшую паузу появляется торт */
+
+    setTimeout(() => {
+
+        cake.classList.add("show");
+
+    }, 1800);
+
+    /* Потом появляется банан */
+
+    setTimeout(() => {
+
+        banana.classList.add("show");
+
+        createConfetti();
+
+    }, 3300);
+
+}
+
+
+/* Конфетти */
+
+function createConfetti() {
+
+    const symbols = [
+        "🎉",
+        "✨",
+        "🎊",
+        "⭐",
+        "😂"
+    ];
+
+    for (let i = 0; i < 25; i++) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "confetti";
+
+        item.textContent =
+            symbols[
+                Math.floor(
+                    Math.random() * symbols.length
+                )
+            ];
+
+        item.style.left =
+            Math.random() * 100 + "vw";
+
+        item.style.top =
+            -30 - Math.random() * 100 + "px";
+
+        item.style.animationDelay =
+            Math.random() * 1.5 + "s";
+
+        document.body.appendChild(item);
+
+        setTimeout(() => {
+            item.remove();
+        }, 4500);
+    }
+
+}
+
+</script>
+
+</body>
+              </html>
